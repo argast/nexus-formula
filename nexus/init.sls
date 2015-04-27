@@ -51,10 +51,20 @@ move-nexus-dist:
     - name: mv {{ nexus.download_dir }}/nexus-* {{ nexus.real_home }}
     - unless: test -d {{ nexus.home }}
 
+{{ nexus.real_home }}
+  file.directory:
+    - user: nexus
+    - group: nexus
+    - recurse:
+      - user
+      - group
+
 {{ nexus.home }}:
   file.symlink:
     - target: {{ nexus.real_home }}
     - force: True
+    - user: nexus
+    - group: nexus
 
 /etc/init.d/nexus:
   file.managed:
@@ -70,6 +80,8 @@ move-nexus-dist:
   file.managed:
     - mode: 755
     - source: salt://nexus/files/nexus.properties
+    - user: nexus
+    - group: nexus
     - template: jinja
     - context:
       nexus_home: {{ nexus.home }}

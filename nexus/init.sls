@@ -51,7 +51,7 @@ move-nexus-dist:
     - name: mv {{ nexus.download_dir }}/nexus-* {{ nexus.real_home }}
     - unless: test -d {{ nexus.home }}
 
-{{ nexus.real_home }}
+{{ nexus.real_home }}:
   file.directory:
     - user: nexus
     - group: nexus
